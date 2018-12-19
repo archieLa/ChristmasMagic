@@ -17,6 +17,8 @@ class DateTimeResIf
         virtual void increment_date() = 0;
         virtual void reset_without_date() = 0;
         virtual void reset_with_date(const DateTime& date) = 0;
+    private:
+      virtual void set_to_unavail();
 };
 
 class DateTimeResSim : public DateTimeResIf 
@@ -25,7 +27,6 @@ class DateTimeResSim : public DateTimeResIf
         DateTimeResSim(const DateTime& date) : mDateTime(date), mAvail(true) {}
         boolean get_current_date(DateTime& date);
         boolean check_if_aval() const;
-        void handle_command(Common::CommandContext context, void* msg); 
     private:
         void set_current_date(const DateTime& date);
         void increment_date();
@@ -42,7 +43,6 @@ class DateTimeResRtc : public DateTimeResIf
         DateTimeResRtc(const DateTime& date);
         boolean get_current_date(DateTime& date);
         boolean check_if_aval() const;
-        void handle_command(Common::CommandContext context, void* msg);
     private:
         void set_current_date(const DateTime& date);
         void increment_date();
@@ -50,7 +50,7 @@ class DateTimeResRtc : public DateTimeResIf
         void reset_with_date(const DateTime& date);
         DateTime mDateTime;
         RTC_PCF8523 mRtc;
-}
+};
 
 
 #endif // !_DATETIMERESOURCE_H_
