@@ -1,5 +1,9 @@
 #include "CalendarOutputDriver.h"
 
+const uint16_t CalendarOutputDriver::mDayToPixelMap[25] = {255, 13, 0, 16, 2, 9, 22, 10, 19, 8, 14, 21, 23, 5, 7,
+                                                    3, 1, 17, 20, 6, 15, 11, 12, 18, 4};
+
+
 
 void CalendarOutputDriver::turn_off_all()
 {

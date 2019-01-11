@@ -22,7 +22,7 @@ class CalendarOutputDriver
     public:
         CalendarOutputDriver() : pixels(NUMPIXELS, PIXELS_CONTROL, NEO_GRB + NEO_KHZ800)
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
             pinMode(FINAL_SONG_CONTROL, OUTPUT);
             pinMode(START_SONG_CONTROL, OUTPUT);
             pinMode(WRONG_DOOR_CONTROL, OUTPUT);
@@ -31,13 +31,13 @@ class CalendarOutputDriver
 
         int begin()
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
             pixels.begin();
         }
 
         void trigg_correct_day(uint16_t day)
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
             digitalWrite(CORRECT_DOOR_CONTROL, HIGH);
             fade_to_red_single(mDayToPixelMap[day], GREEN);
             digitalWrite(CORRECT_DOOR_CONTROL, LOW);                   
@@ -45,7 +45,7 @@ class CalendarOutputDriver
 
         void trigg_incorrect_day(uint16_t day)
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
             digitalWrite(WRONG_DOOR_CONTROL, HIGH);
             flash_single(mDayToPixelMap[day], RED, GREEN, GREEN);
             digitalWrite(WRONG_DOOR_CONTROL, LOW);
@@ -53,7 +53,7 @@ class CalendarOutputDriver
 
         void trigg_start_calendar()
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
             digitalWrite(START_SONG_CONTROL, HIGH);
             animation_one();
             fade_red_into_green_all();
@@ -62,7 +62,7 @@ class CalendarOutputDriver
 
         void trigg_end_calendar()
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
+            //debugLogger.log(mDebugStr, __FUNCTION__);
             digitalWrite(FINAL_SONG_CONTROL, HIGH);
             ending_animation();
             digitalWrite(FINAL_SONG_CONTROL, LOW);
@@ -70,9 +70,8 @@ class CalendarOutputDriver
 
     private:
         // This is a map of day numbers to pixels
-        static const uint16_t mDayToPixelMap[25] = {255, 13, 0, 16, 2, 9, 22, 10, 19, 8, 14, 21, 23, 5, 7,
-                                                    3, 1, 17, 20, 6, 15, 11, 12, 18, 4};
-        static const char *mDebugStr = "Calendar Output Driver: %s";
+        static const uint16_t mDayToPixelMap[25];
+        const char* mDebugStr = "Calendar Output Driver: %s"; 
         Adafruit_NeoPixel pixels;
         void turn_off_all();
         void fade_to_red_single(uint16_t led, uint8_t s_r, uint8_t s_g, uint8_t s_b);
