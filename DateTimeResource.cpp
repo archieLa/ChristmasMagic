@@ -3,7 +3,7 @@
 
 /*  Date Time Resource Interface */
 
-void DateTimeResIf::handle_command(Common::CommandContext context, void* msg)
+void DateTimeResIf::handle_callback(Common::CommandContext context, void* msg)
 {
     
     DateTime* date = nullptr;

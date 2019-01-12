@@ -10,7 +10,7 @@ class DateTimeResIf
     public:
         virtual boolean get_current_date(DateTime& date) = 0;
         virtual boolean check_if_aval() const = 0;
-        virtual void handle_command(Common::CommandContext context, void* msg);
+        virtual void handle_callback(Common::CommandContext context, void* msg);
         virtual ~DateTimeResIf() {}
     protected:
         virtual void set_current_date(const DateTime& date) = 0;

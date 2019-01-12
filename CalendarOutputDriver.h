@@ -3,14 +3,6 @@
 #include "Adafruit_NeoPixel.h"
 #include "Common.h"
 
-#define PIXELS_CONTROL 16
-#define FINAL_SONG_CONTROL A3
-#define START_SONG_CONTROL A0
-#define WRONG_DOOR_CONTROL A2
-#define CORRECT_DOOR_CONTROL A1
-
-#define NUMPIXELS 24
-
 // Helpers for the pixels functions
 #define RED 255, 0, 0
 #define GREEN 0, 255, 0
@@ -70,7 +62,14 @@ class CalendarOutputDriver
         }
 
     private:
-        // This is a map of day numbers to pixels
+        const uint8_t PIXELS_CONTROL = 16;
+        const uint8_t FINAL_SONG_CONTROL = A3;
+        const uint8_t START_SONG_CONTROL = A0;
+        const uint8_t WRONG_DOOR_CONTROL = A2;
+        const uint8_t CORRECT_DOOR_CONTROL = A1;
+        const uint16_t NUMPIXELS = 24; 
+        
+        // This is a map of day numbers to pixel
         static const uint16_t mDayToPixelMap[25];
         const char* mDebugStr = "Calendar Output Driver: %s"; 
         Adafruit_NeoPixel pixels;
