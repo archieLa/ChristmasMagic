@@ -53,7 +53,7 @@ void loop() {
       case 'd':
       {
         outCalDriver.trigg_end_calendar();
-        break;
+        break;       
       }
       default:
       {

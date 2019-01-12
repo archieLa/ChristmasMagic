@@ -42,7 +42,7 @@ class DateTimeResRtc : public DateTimeResIf
     public:
         DateTimeResRtc(const DateTime& date);
         boolean get_current_date(DateTime& date);
-        boolean check_if_aval() const;
+        boolean check_if_aval();
     private:
         void set_current_date(const DateTime& date);
         void increment_date();

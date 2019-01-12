@@ -4,7 +4,6 @@ const uint16_t CalendarOutputDriver::mDayToPixelMap[25] = {255, 13, 0, 16, 2, 9,
                                                     3, 1, 17, 20, 6, 15, 11, 12, 18, 4};
 
 
-
 void CalendarOutputDriver::turn_off_all()
 {
     pixels.clear();
@@ -15,11 +14,13 @@ void CalendarOutputDriver::turn_off_all()
 
 void CalendarOutputDriver::fade_to_red_single(uint16_t led, uint8_t s_r, uint8_t s_g, uint8_t s_b)
 {
+
     for (uint16_t j = 0; j <= 255; j++)
     {
+     
       pixels.setPixelColor(led, pixels.Color(s_r,s_g,s_b));
       pixels.show();
-      delay(5);
+      delay(10);
       // Make sure numbers don't go negative
       if (s_r < 255)
       {
@@ -49,7 +50,7 @@ void CalendarOutputDriver::turn_on_single(uint16_t led, uint8_t r, uint8_t g, ui
 void CalendarOutputDriver::flash_single(uint16_t led, uint8_t f_r, uint8_t f_g, uint8_t f_b,
                           uint8_t f_2_r, uint8_t f_2_g, uint8_t f_2_b, uint8_t a_r, uint8_t a_g, uint8_t a_b)
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 14; i++)
     {
       pixels.setPixelColor(led, pixels.Color(f_r, f_g, f_b));
       pixels.show();
@@ -70,7 +71,7 @@ void CalendarOutputDriver::animation_one()
       {
         pixels.setPixelColor(i, pixels.Color(0,0,j));
         pixels.show();
-        delay(5);
+        delay(15);
       }
   
     }
@@ -110,7 +111,7 @@ void CalendarOutputDriver::animation_one()
       pixels.show();
       delay(100);
     }
-
+  
     // Flash 4 really quick 6 times
     for (int i = 0; i < 6; i++)
     {
@@ -143,7 +144,7 @@ void CalendarOutputDriver::animation_one()
 
 void CalendarOutputDriver::fade_red_into_green_all()
 {
-    // Slowly turn red into green
+     // Slowly turn red into green
     uint16_t k = 255;
     for (uint16_t j = 0; j <= 255; j++)
     {

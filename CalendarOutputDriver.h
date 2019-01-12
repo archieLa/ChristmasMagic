@@ -3,9 +3,9 @@
 #include "Adafruit_NeoPixel.h"
 #include "Common.h"
 
-#define PIXELS_CONTROL 27
+#define PIXELS_CONTROL 16
 #define FINAL_SONG_CONTROL A3
-#define START_SONG_CONTROL A3
+#define START_SONG_CONTROL A0
 #define WRONG_DOOR_CONTROL A2
 #define CORRECT_DOOR_CONTROL A1
 
@@ -22,7 +22,7 @@ class CalendarOutputDriver
     public:
         CalendarOutputDriver() : pixels(NUMPIXELS, PIXELS_CONTROL, NEO_GRB + NEO_KHZ800)
         {
-            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             pinMode(FINAL_SONG_CONTROL, OUTPUT);
             pinMode(START_SONG_CONTROL, OUTPUT);
             pinMode(WRONG_DOOR_CONTROL, OUTPUT);
@@ -31,13 +31,13 @@ class CalendarOutputDriver
 
         int begin()
         {
-            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             pixels.begin();
         }
 
         void trigg_correct_day(uint16_t day)
         {
-            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             digitalWrite(CORRECT_DOOR_CONTROL, HIGH);
             fade_to_red_single(mDayToPixelMap[day], GREEN);
             digitalWrite(CORRECT_DOOR_CONTROL, LOW);                   
@@ -45,7 +45,7 @@ class CalendarOutputDriver
 
         void trigg_incorrect_day(uint16_t day)
         {
-            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             digitalWrite(WRONG_DOOR_CONTROL, HIGH);
             flash_single(mDayToPixelMap[day], RED, GREEN, GREEN);
             digitalWrite(WRONG_DOOR_CONTROL, LOW);
@@ -53,7 +53,7 @@ class CalendarOutputDriver
 
         void trigg_start_calendar()
         {
-            //debugLogger.log(CalendarOutputDriver::mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             digitalWrite(START_SONG_CONTROL, HIGH);
             animation_one();
             fade_red_into_green_all();
@@ -62,8 +62,9 @@ class CalendarOutputDriver
 
         void trigg_end_calendar()
         {
-            //debugLogger.log(mDebugStr, __FUNCTION__);
+            debugLogger.log(mDebugStr, __FUNCTION__);
             digitalWrite(FINAL_SONG_CONTROL, HIGH);
+            delay(5000);
             ending_animation();
             digitalWrite(FINAL_SONG_CONTROL, LOW);
         }

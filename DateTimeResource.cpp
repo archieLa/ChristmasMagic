@@ -129,7 +129,7 @@ boolean DateTimeResRtc::get_current_date(DateTime& date)
 
 }
 
-boolean DateTimeResRtc::check_if_aval() const
+boolean DateTimeResRtc::check_if_aval()
 {
     return ((mRtc.initialized()) && (mRtc.checkBatteryStatus() == RTC_PCF8523::BATT_OK) \
            && (!mRtc.checkIfErrorPresent())); 
