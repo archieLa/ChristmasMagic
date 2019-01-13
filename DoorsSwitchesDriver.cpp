@@ -34,9 +34,9 @@ void DoorsSwitchesDriver::handleDoorSwInterrupt2()
     }
 }
 
-
 void DoorsSwitchesDriver::handle_interrupt(uint8_t mcpNumber)
 {
+    debugLogger.log(mDEBUGSTR1, __FUNCTION__);
     
     uint8_t pin;
 
@@ -69,7 +69,7 @@ void DoorsSwitchesDriver::handle_interrupt(uint8_t mcpNumber)
     }
     else
     {
-        mSubscriber->handle_callback(Common::DOOR_OPENED, reinterpret_cast<void*>(mLastDoorNumberTriggered));
+        mSubscriber->handle_callback(reinterpret_cast<void*>(mLastDoorNumberTriggered));
     }
 
 }

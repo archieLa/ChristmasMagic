@@ -1,12 +1,15 @@
-#include <RTClib.h>
-//#include "Common.h"
-//#include "DateTimeResource.h"
-//#include "SimpleDebug.h"
-#include "CalendarOutputDriver.h"
 #include "Common.h"
+#include <RTClib.h>
+#include "SimpleDebug.h"
+#include "CalendarOutputDriver.h"
+#include "DoorsSwitchesDriver.h"
+#include "ResourceController.h"
 
-
+DoorsSwitchesDriver inDoorSwDriver;
 CalendarOutputDriver outCalDriver;
+RTC_PCF8523 rtc;
+File storageFile(InternalFS);
+ResourceController resController(outCalDriver, inDoorSwDriver, rtc, storageFile);
 
 
 void setup() {
@@ -18,52 +21,13 @@ void setup() {
   debugLogger.disable();
   #endif
 
-  outCalDriver.begin();
+  InternalFS.begin();
+  resController.begin();
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  resController.execute();
+  delay(100);
   
-  
-  if (Serial.available())
-  {
-    char incomingCommand;
-    incomingCommand = Serial.read();
-    
-    switch (incomingCommand)
-    {
-      case 'a':
-      {
-        int switchNum = Serial.parseInt();
-        outCalDriver.trigg_correct_day(switchNum);
-        break;
-      }
-      case 'b':
-      {
-        int switchNum = Serial.parseInt();
-        outCalDriver.trigg_incorrect_day(switchNum);
-        break; 
-      }
-      case 'c':
-      {
-        outCalDriver.trigg_start_calendar();
-        break;
-      }
-      case 'd':
-      {
-        outCalDriver.trigg_end_calendar();
-        break;       
-      }
-      default:
-      {
-        Serial.println("oppps");
-        break;
-      }
-
-    }
-
-    delay(1000);
-
-  }
 }

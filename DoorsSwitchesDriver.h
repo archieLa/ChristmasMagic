@@ -94,24 +94,30 @@ class DoorsSwitchesDriver
     static void handleDoorSwInterrupt();
     static void handleDoorSwInterrupt2();
     
-    
     private:
-    const char* mDEBUGSTR1 = "Door SW Driver: %s\n";
-    const char* mDEBUGSTR2 = "Door SW Driver: %s, door #: %d\n";     
-    static const uint8_t mMCP1_PIN_TO_DOOR[15];
-    static const uint8_t mMCP2_PIN_TO_DOOR[13];
+
+    Adafruit_MCP23017 mcp;
+    Adafruit_MCP23017 mcp2;    
+    
+    Subscriber* mSubscriber;
+
+    bool mInterrStopped;
+
+    uint8_t mLastDoorNumberTriggered;
+
     const uint8_t mADDR1;
     const uint8_t mADDR2;
     const uint8_t mINTPIN1;
-    const uint8_t mINTPIN2;
-    bool mInterrStopped;
-    Subscriber* mSubscriber;
-    uint8_t mLastDoorNumberTriggered;
-    Adafruit_MCP23017 mcp;
-    Adafruit_MCP23017 mcp2;
+    const uint8_t mINTPIN2;    
+
+    const char* mDEBUGSTR1 = "Door SW Driver: %s\n";
+    const char* mDEBUGSTR2 = "Door SW Driver: %s, door #: %d\n"; 
+
+    static const uint8_t mMCP1_PIN_TO_DOOR[15];
+    static const uint8_t mMCP2_PIN_TO_DOOR[13];    
+    
     static DoorsSwitchesDriver* mItself;
     
-
 };
 
 
