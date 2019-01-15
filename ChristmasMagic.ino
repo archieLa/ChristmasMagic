@@ -28,6 +28,7 @@ void setup() {
 
 void loop() {
   resController.execute();
-  delay(100);
+  debugLogger.log("Out of resource controller\n");
+  delay(80);
   
 }

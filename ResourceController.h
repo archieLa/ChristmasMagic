@@ -17,7 +17,7 @@ class ResourceController : public Subscriber
     {
         debugLogger.log(mDEBUGSTR1, __FUNCTION__);
         // Subscribe to sw event
-        mDoorsSwDriver.subscribe_to_sw_event(this);
+        //mDoorsSwDriver.subscribe_to_sw_event(this);
         mLocalMapOfOpened[0] = 255;  // Set first not used position to default value
         
     }
@@ -40,12 +40,13 @@ class ResourceController : public Subscriber
         {
             mRtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
         }
+        debugLogger.log("%s: mDoorTriggered\n", mDoorTriggered);
 
     }
 
     void execute();
 
-    void handle_callback(void* msg);
+    void handle_callback(uint8_t msg);
 
     private:
     bool should_calendar_start();
@@ -54,7 +55,7 @@ class ResourceController : public Subscriber
     bool check_if_all_prev_opened(uint8_t day);
     void parse_serial_command();
 
-    enum DayDoorsSate {NOT_OPENED, OPENED};
+    enum DayDoorsSate {NOT_OPENED = 0, OPENED = 1};
     enum OperStates {INACTIVE, ACTIVE};
     
     OperStates mState;
@@ -73,7 +74,7 @@ class ResourceController : public Subscriber
     
     bool mInterruptTriggered;
 
-    const char* mFILENAME = "ChristmasDays.txt";
+    const char* mFILENAME = "/ChristmasDays2.txt";
     const char* mDEBUGSTR1 = "Resource Controller: %s\n";
     const char* mDEBUGSTR2 = "Error Reading Time\n";
     

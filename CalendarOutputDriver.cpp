@@ -142,17 +142,23 @@ void CalendarOutputDriver::animation_one()
     }  
 }
 
-void CalendarOutputDriver::fade_red_into_green_all()
+void CalendarOutputDriver::begin_fade()
 {
      // Slowly turn red into green
     uint16_t k = 255;
     for (uint16_t j = 0; j <= 255; j++)
     {
+      if (j <= 230)
+      {
+        pixels2.setPixelColor(0, j, j, j);
+      }
+      
       for(int i=0; i < NUMPIXELS; i++)
       {
         pixels.setPixelColor(i, pixels.Color(k,j,0));      
       }
       pixels.show();
+      pixels2.show();
       delay(13);
       k--;
     }  
@@ -751,25 +757,125 @@ void CalendarOutputDriver::ending_animation()
       delay(5);  
     }
     
+    int16_t whitePixel = 230;
     turn_on_all(0, 255, 0);
-    delay(200);
+    // use the delay to start dimming the pixel in between flashing
+    for (uint8_t i = 0; i < 40; i++)
+    {
+      // Control the pixel so it doesn't go below zero value
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    }   
+    //delay(200);
     turn_off_all();
-    delay(200);
+    for (uint8_t i = 0; i < 40; i++)
+    {
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    }   
+    //delay(200);
     turn_on_all(0, 255, 0);
-    delay(100);
+    for (uint8_t i = 0; i < 20; i++)
+    {
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    }   
+    //delay(100);
     turn_off_all();
-    delay(100);
+    for (uint8_t i = 0; i < 20; i++)
+    {
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    } 
+    //delay(100);
     turn_on_all(0, 255, 0);
-    delay(75);
+    for (uint8_t i = 0; i < 15; i++)
+    {
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    } 
+    //delay(75);
     turn_off_all();
-    delay(75);
+    for (uint8_t i = 0; i < 15; i++)
+    {
+      if (whitePixel < 0)
+      {
+        whitePixel = 0;
+      }
+      pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+      pixels2.show();
+      whitePixel--;
+      delay(5);
+    } 
+    //delay(75);
     for (i = 0; i < 10; i++)
     {
       turn_on_all(0, 255, 0);
-      delay(25);
+      for (uint8_t i = 0; i < 5; i++)
+      {
+        if (whitePixel < 0)
+        {
+          whitePixel = 0;
+        }
+        pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+        pixels2.show();
+        whitePixel--;
+        delay(5);
+      } 
+      //delay(25);
       turn_off_all();
-      delay(25);
+      for (uint8_t i = 0; i < 5; i++)
+      {
+        if (whitePixel < 0)
+        {
+          whitePixel = 0;
+        }
+        pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+        pixels2.show();
+        whitePixel--;
+        delay(5);
+      } 
+      //delay(25);
     }  
+    // Make sure the white pixel went all the way to 0
+    while (whitePixel >= 0)
+    {
+        pixels2.setPixelColor(0, whitePixel, whitePixel, whitePixel);
+        pixels2.show();
+        whitePixel--;
+        delay(5);
+    }
+
 }
 
 
