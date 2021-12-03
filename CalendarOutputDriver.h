@@ -25,10 +25,10 @@ class CalendarOutputDriver
             digitalWrite(CORRECT_DOOR_CONTROL, LOW);
         }
 
-        int begin()
+        void begin()
         {
-            debugLogger.log(mDebugStr, __FUNCTION__);
-            pixels.begin();
+             debugLogger.log(mDebugStr, __FUNCTION__);
+            //pixels.begin();
             digitalWrite(FINAL_SONG_CONTROL, LOW);
             digitalWrite(START_SONG_CONTROL, LOW);
             digitalWrite(WRONG_DOOR_CONTROL, LOW);

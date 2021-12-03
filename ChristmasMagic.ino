@@ -8,8 +8,8 @@
 DoorsSwitchesDriver inDoorSwDriver;
 CalendarOutputDriver outCalDriver;
 RTC_PCF8523 rtc;
-File storageFile(InternalFS);
-ResourceController resController(outCalDriver, inDoorSwDriver, rtc, storageFile);
+//File storageFile(InternalFS);
+ResourceController resController(outCalDriver, inDoorSwDriver, rtc);
 
 
 void setup() {
@@ -21,7 +21,7 @@ void setup() {
   debugLogger.disable();
   #endif
 
-  InternalFS.begin();
+  //InternalFS.begin();
   resController.begin();
 
 }
@@ -29,6 +29,6 @@ void setup() {
 void loop() {
   resController.execute();
   debugLogger.log("Out of resource controller\n");
-  delay(80);
+  delay(250);
   
 }

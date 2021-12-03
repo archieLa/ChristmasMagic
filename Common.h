@@ -13,7 +13,6 @@ class Subscriber
 };
 
 extern SimpleDebug<50> debugLogger;
-//#define DEBUG
+#define DEBUG
 
 #endif // !_COMMON_H_
-

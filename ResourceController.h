@@ -4,16 +4,16 @@
 #include "DoorsSwitchesDriver.h"
 #include "CalendarOutputDriver.h"
 #include "Common.h"
-#include <Bluefruit_FileIO.h>
+//#include <Adafruit_LittleFS.h>
+//#include <InternalFileSystem.h>
 #include <RTClib.h>
 
 
-class ResourceController : public Subscriber
+class ResourceController
 {
     public:
-    ResourceController(CalendarOutputDriver& calDriver, DoorsSwitchesDriver& doorsDriver, RTC_PCF8523& rtc, File& storageFile) 
-    : mCalOutDriver(calDriver), mDoorsSwDriver(doorsDriver), mRtc(rtc), mState(INACTIVE), mFile(storageFile),
-    mInterruptTriggered(false), mDoorTriggered(0)
+    ResourceController(CalendarOutputDriver& calDriver, DoorsSwitchesDriver& doorsDriver, RTC_PCF8523& rtc) 
+    : mCalOutDriver(calDriver), mDoorsSwDriver(doorsDriver), mRtc(rtc), mState(INACTIVE), mDoorTriggered(0)
     {
         debugLogger.log(mDEBUGSTR1, __FUNCTION__);
         // Subscribe to sw event
@@ -26,9 +26,13 @@ class ResourceController : public Subscriber
     {
         debugLogger.log(mDEBUGSTR1, __FUNCTION__);
         // Begin the drivers
-        mCalOutDriver.begin();
+        debugLogger.log("HERE3");
+        //mCalOutDriver.begin();
+        debugLogger.log("HERE4");
         mDoorsSwDriver.begin();
+        debugLogger.log("HERE");
         mRtc.begin();
+        debugLogger.log("HERE2");
         // Begin the RTC if we can't it is a critical error
         if (! mRtc.begin())
         {
@@ -46,11 +50,9 @@ class ResourceController : public Subscriber
 
     void execute();
 
-    void handle_callback(uint8_t msg);
-
     private:
     bool should_calendar_start();
-    void parse_stored_doors_file();
+    //void parse_stored_doors_file();
     void copy_file_to_local();
     bool check_if_all_prev_opened(uint8_t day);
     void parse_serial_command();
@@ -63,7 +65,7 @@ class ResourceController : public Subscriber
     CalendarOutputDriver& mCalOutDriver;
     DoorsSwitchesDriver& mDoorsSwDriver;
     RTC_PCF8523& mRtc;
-    File& mFile;
+    //File& mFile;
 
     DateTime mDateTime;
 
@@ -72,8 +74,6 @@ class ResourceController : public Subscriber
     uint8_t mLocalMapOfOpened[NUMOFDAYS] = {0};
     uint8_t mBuffer[NUMOFDAYS] = {0};
     
-    bool mInterruptTriggered;
-
     const char* mFILENAME = "/ChristmasDays2.txt";
     const char* mDEBUGSTR1 = "Resource Controller: %s\n";
     const char* mDEBUGSTR2 = "Error Reading Time\n";

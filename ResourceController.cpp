@@ -93,14 +93,6 @@ void ResourceController::execute()
 }
 
 
-void ResourceController::handle_callback(uint8_t msg)
-{
-    debugLogger.log(mDEBUGSTR1, __FUNCTION__);
-    mDoorTriggered = msg;
-    debugLogger.log("RC %s, door %d\n", __FUNCTION__, mDoorTriggered);
-    mInterruptTriggered = true;
-}
-
 
 bool ResourceController::should_calendar_start()
 {
@@ -120,7 +112,7 @@ bool ResourceController::should_calendar_start()
     
 }
 
-void ResourceController::parse_stored_doors_file()
+/*void ResourceController::parse_stored_doors_file()
 {
     debugLogger.log(mDEBUGSTR1, __FUNCTION__);
     // If flash file open we will copy the content to our array
@@ -136,6 +128,7 @@ void ResourceController::parse_stored_doors_file()
         }
     }
 }
+*/
 
 void ResourceController::copy_file_to_local()
 {

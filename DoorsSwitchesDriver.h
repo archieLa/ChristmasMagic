@@ -2,16 +2,15 @@
 #define _DOORSSWITCHESDRIVER_H_
 #include <Arduino.h>
 #include <Wire.h>
-#include <Adafruit_MCP23017.h>
+#include <Adafruit_MCP23X17.h>
 #include "Common.h"
 
 
 class DoorsSwitchesDriver 
 {
     public:
-    DoorsSwitchesDriver(uint8_t addr1 = 0, uint8_t addr2 = 1, uint8_t intPin1 = 30, uint8_t intPin2 = 31,
-    bool useInterrupts = false) : mADDR1(addr1), mADDR2(addr2), mINTPIN1(intPin1), mINTPIN2(intPin2), mInterrStopped(true)
-    ,mUseInterrupts(useInterrupts), mSubscriber(NULL), mPreviousSwitchesState1(0)
+    DoorsSwitchesDriver(uint8_t addr1 = 0x20, uint8_t addr2 = 0x21, uint8_t intPin1 = 30, uint8_t intPin2 = 31,
+    bool useInterrupts = false) : mADDR1(addr1), mADDR2(addr2), mINTPIN1(intPin1), mINTPIN2(intPin2), mPreviousSwitchesState1(0)
     ,mCurrentSwitchesState1(0), mPreviousSwitchesState2(0), mCurrentSwitchesState2(0)
     ,mLastDoorNumberTriggered(0)
     {
@@ -19,33 +18,19 @@ class DoorsSwitchesDriver
         // Initialize pin on the microcontroller
         pinMode(mINTPIN1, INPUT);
         pinMode(mINTPIN2, INPUT);
-        // Set ups interr on mcp chips
-        if (mUseInterrupts)
-        {
-            mcp.setupInterrupts(true,false,LOW);
-            mcp2.setupInterrupts(true,false,LOW);
-        }
         
         // Initializes pin on mcp chips
         // Set up all the pins except for last one  - connected to MCP2
         for (int i = 0; i < 15; i++)
         {
-            mcp.pinMode(i, INPUT);
-            mcp.pullUp(i, HIGH);  // turn on a 100K pullup internally
-            if (mUseInterrupts)
-            {
-                mcp.setupInterruptPin(i, RISING);     
-            }
+            mcp.pinMode(i, INPUT_PULLUP);
+            //mcp.pullUp(i, HIGH);  // turn on a 100K pullup internally
         }
         // Set up pins used on the second mcp
-        for (int i = 4; i < 13; i++)
+        for (int i = 0; i < 15; i++)
         {
-            mcp2.pinMode(i, INPUT);
-            mcp2.pullUp(i, HIGH);  // turn on a 100K pullup internally
-            if (mUseInterrupts)
-            {            
-                mcp2.setupInterruptPin(i, RISING); 
-            }
+            mcp2.pinMode(i, INPUT_PULLUP);
+            //mcp2.pullUp(i, HIGH);  // turn on a 100K pullup internally
         }
 
         //for (int i = 8; i < 13; i++)
@@ -67,64 +52,15 @@ class DoorsSwitchesDriver
     void begin()
     {
         debugLogger.log(mDEBUGSTR1, __FUNCTION__);
-        mcp.begin(mADDR1);
-        mcp2.begin(mADDR2);
+        mcp.begin_I2C(mADDR1);
+        mcp2.begin_I2C(mADDR2);
         //debugLogger.log("MCP gpios are: %d\n", mcp.readGPIOAB());
         //debugLogger.log("MCP2 gpios are %d\n", mcp2.readGPIOAB());
         // attach interrupt functions
-        if (mUseInterrupts)
-        {
-            attachInterrupt(digitalPinToInterrupt(mINTPIN1), DoorsSwitchesDriver::handleDoorSwInterrupt, FALLING);
-            attachInterrupt(digitalPinToInterrupt(mINTPIN2), DoorsSwitchesDriver::handleDoorSwInterrupt2, FALLING);
-            mInterrStopped = false;
-        }
-    }
-
-    void stop_interrupts()
-    {
-        if (mUseInterrupts)
-        {
-            debugLogger.log(mDEBUGSTR1, __FUNCTION__);
-            if (!mInterrStopped)
-            {
-                detachInterrupt(digitalPinToInterrupt(mINTPIN1));
-                detachInterrupt(digitalPinToInterrupt(mINTPIN2));
-                mInterrStopped = true;
-            }
-        }
-    }
-
-    void start_interrupts()
-    {
-        if (mUseInterrupts)
-        {
-            debugLogger.log(mDEBUGSTR1, __FUNCTION__);
-            if (mInterrStopped)
-            {
-                attachInterrupt(digitalPinToInterrupt(mINTPIN1), handleDoorSwInterrupt, FALLING);
-                attachInterrupt(digitalPinToInterrupt(mINTPIN2), handleDoorSwInterrupt2, FALLING); 
-                mInterrStopped = false;  
-            }
-        }
-    }
-
-    void subscribe_to_sw_event(Subscriber* subscriber)
-    {
-        if (mUseInterrupts)
-        {
-            debugLogger.log(mDEBUGSTR1, __FUNCTION__);
-            mSubscriber = subscriber;
-            mItself = this;
-        }
     }
 
     // Returns 0 if no door was opened
     uint8_t find_which_door_opened();
-
-    void handle_interrupt(uint8_t mcpNumber);
-
-    static void handleDoorSwInterrupt();
-    static void handleDoorSwInterrupt2();
     
     private:
     
@@ -171,8 +107,8 @@ class DoorsSwitchesDriver
     uint16_t mCurrentSwitchesState2;
     
     
-    Adafruit_MCP23017 mcp;
-    Adafruit_MCP23017 mcp2;    
+    Adafruit_MCP23X17 mcp;
+    Adafruit_MCP23X17 mcp2;    
     
     Subscriber* mSubscriber;
 
@@ -192,7 +128,6 @@ class DoorsSwitchesDriver
     static const uint8_t mMCP1_PIN_TO_DOOR[15];
     static const uint8_t mMCP2_PIN_TO_DOOR[13];    
     
-    static DoorsSwitchesDriver* mItself;
     
 };
 
